@@ -9,8 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
 } from 'recharts'
 import {
   Calendar as CalendarIcon,
@@ -123,10 +123,23 @@ export default function CommissionPage() {
           <CardContent>
             <div style={{ width: '100%', height: 300 }}>
               <ResponsiveContainer>
-                <LineChart
+                <AreaChart
                   data={monthlyPerformanceData}
-                  margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
+                  // margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
                 >
+                  <defs>
+                    <linearGradient
+                      id="colorCommission"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="month"
@@ -152,15 +165,14 @@ export default function CommissionPage() {
                     labelStyle={{ fontWeight: 'bold', color: '#1f2937' }}
                     itemStyle={{ color: '#4f46e5' }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="commission"
                     stroke="#4f46e5"
                     strokeWidth={2}
-                    dot={{ r: 4, fill: '#4f46e5' }}
-                    activeDot={{ r: 8 }}
+                    fill="url(#colorCommission)"
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
