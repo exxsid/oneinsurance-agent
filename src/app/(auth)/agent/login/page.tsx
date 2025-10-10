@@ -87,23 +87,7 @@ export default function LoginPage() {
   })
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-10">
-      <div className="flex justify-between">
-        <Image
-          src="/images/logo.png"
-          alt="Company Logo"
-          width={150}
-          height={100}
-          className="object-contain"
-        />
-        <Image
-          src="/images/IFRC.png"
-          alt="IFRC Logo"
-          width={100}
-          height={100}
-          className="object-contain"
-        />
-      </div>
+    <>
       <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl font-black text-transparent md:text-6xl">
         Log In
       </h1>
@@ -207,6 +191,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -16,11 +16,13 @@ import { FieldInfo } from '@/components/ui/form'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
-import Image from 'next/image'
 import {
   useRegisterAgent,
   useSendEmailVerification,
 } from '@/app/data/mutations/agent/auth-agent'
+import Link from 'next/link'
+import { useAgentAuthStore } from '@/store/agent-auth-store'
+import { useEffect } from 'react'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -42,6 +44,13 @@ export default function SignUpPage() {
     validationErrors,
     isFormValid,
   } = useAgentRegistrationStore()
+  const { isAuthenticated } = useAgentAuthStore()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/agent/dashboard')
+    }
+  }, [isAuthenticated, router])
 
   const form = useForm({
     defaultValues: credentials as RegisterAgent,
@@ -106,28 +115,7 @@ export default function SignUpPage() {
   })
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-10">
-      <div className="flex justify-between">
-        <Image
-          src="/images/logo.png"
-          alt="Company Logo"
-          width={150}
-          height={100}
-          className="object-contain"
-        />
-        <Image
-          src="/images/IFRC.png"
-          alt="IFRC Logo"
-          width={100}
-          height={100}
-          className="object-contain"
-        />
-      </div>
-      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl font-black text-transparent md:text-6xl">
-        Sign Up
-      </h1>
-      <p>Provide your details in the form</p>
-
+    <>
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -308,14 +296,20 @@ export default function SignUpPage() {
         </div>
       </form>
 
-      {/* <div className="relative flex items-center justify-center py-8">
-        <p className="text-muted-foreground text-sm">
-          Already have an account?{' '}
-          <Link href="/sign-in" className="underline underline-offset-8">
-            Sign in now!
-          </Link>
-        </p>
-      </div> */}
-    </div>
+      {/* Additional Actions */}
+      <div className="relative flex items-center justify-start py-4">
+        <div className="text-muted-foreground flex flex-col items-start gap-2 text-sm">
+          <p>
+            Already have an account?{' '}
+            <Link
+              href="/agent/login"
+              className="hover:text-primary underline underline-offset-4"
+            >
+              Login
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
   )
 }

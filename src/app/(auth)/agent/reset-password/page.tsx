@@ -143,7 +143,7 @@ function ResetPasswordContent() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-7 px-4 sm:px-[10%] md:px-[20%]">
+    <>
       {/* Header */}
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="rounded-full bg-blue-100 p-4">
@@ -158,85 +158,87 @@ function ResetPasswordContent() {
       </div>
 
       {/* Reset Password Form */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          form.handleSubmit()
-        }}
-        className="flex w-full max-w-md flex-col gap-4"
-      >
-        <form.Field name="password">
-          {(field) => (
-            <div className="flex w-full flex-col gap-2">
-              <Label htmlFor={field.name}>New Password *</Label>
-              <PasswordInput
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Enter your new password"
-                className={
-                  getFieldErrors('password').length > 0
-                    ? 'border-destructive'
-                    : ''
-                }
-              />
-              <FieldInfo field={field} />
-              <FieldErrors fieldName="password" />
-            </div>
-          )}
-        </form.Field>
-
-        <form.Field name="confirmPassword">
-          {(field) => (
-            <div className="flex w-full flex-col gap-2">
-              <Label htmlFor={field.name}>Confirm New Password *</Label>
-              <PasswordInput
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Confirm your new password"
-                className={
-                  getFieldErrors('confirmPassword').length > 0
-                    ? 'border-destructive'
-                    : ''
-                }
-              />
-              <FieldInfo field={field} />
-              <FieldErrors fieldName="confirmPassword" />
-            </div>
-          )}
-        </form.Field>
-
-        {/* General Error Display */}
-        {error && (
-          <div className="bg-destructive/15 text-destructive flex items-start gap-2 rounded-md p-3 text-sm">
-            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {/* Submit Button */}
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
+      <div className="flex w-full flex-col items-center">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            form.handleSubmit()
+          }}
+          className="flex w-full max-w-md flex-col gap-4"
         >
-          {([canSubmit, isSubmitting]) => (
-            <Button
-              type="submit"
-              disabled={!canSubmit || isSubmitting || isPending}
-              className="w-full text-white"
-            >
-              {isSubmitting || isPending ? (
-                <>
-                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  Resetting Password...
-                </>
-              ) : (
-                'Reset Password'
-              )}
-            </Button>
+          <form.Field name="password">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name}>New Password *</Label>
+                <PasswordInput
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Enter your new password"
+                  className={
+                    getFieldErrors('password').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+                <FieldErrors fieldName="password" />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="confirmPassword">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name}>Confirm New Password *</Label>
+                <PasswordInput
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="Confirm your new password"
+                  className={
+                    getFieldErrors('confirmPassword').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+                <FieldErrors fieldName="confirmPassword" />
+              </div>
+            )}
+          </form.Field>
+
+          {/* General Error Display */}
+          {error && (
+            <div className="bg-destructive/15 text-destructive flex items-start gap-2 rounded-md p-3 text-sm">
+              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+              <span>{error}</span>
+            </div>
           )}
-        </form.Subscribe>
-      </form>
+
+          {/* Submit Button */}
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button
+                type="submit"
+                disabled={!canSubmit || isSubmitting || isPending}
+                className="from-primary to-tertiary w-full rounded-full bg-gradient-to-r text-white"
+              >
+                {isSubmitting || isPending ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Resetting Password...
+                  </>
+                ) : (
+                  'Reset Password'
+                )}
+              </Button>
+            )}
+          </form.Subscribe>
+        </form>
+      </div>
 
       {/* Help Text */}
       <div className="text-center text-sm text-gray-500">
@@ -246,11 +248,11 @@ function ResetPasswordContent() {
             onClick={() => router.push('/sign-in')}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            Back to Sign In
+            Back to Login
           </button>
         </p>
       </div>
-    </div>
+    </>
   )
 }
 

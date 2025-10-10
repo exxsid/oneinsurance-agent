@@ -23,7 +23,25 @@ export default function AuthLayout({
       <div className="relative z-10 grid w-full lg:grid-cols-2">
         <div className="relative flex h-screen w-full flex-col">
           <div className="flex h-full w-full items-center justify-center p-10">
-            {children}
+            <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-10">
+              <div className="flex justify-between">
+                <Image
+                  src="/images/logo.png"
+                  alt="Company Logo"
+                  width={150}
+                  height={100}
+                  className="object-contain"
+                />
+                <Image
+                  src="/images/IFRC.png"
+                  alt="IFRC Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain"
+                />
+              </div>
+              {children}
+            </div>
           </div>
         </div>
       </div>
