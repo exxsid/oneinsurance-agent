@@ -15,9 +15,13 @@ export function useRegisterAgent() {
   return useMutation({
     mutationKey: ['register-agent'],
     mutationFn: async ({ data }: { data: RegisterAgent }) => {
+      const requestBody = {
+        ...data,
+        designation: 'Agent',
+      }
       const response = await axios.post<SuccesRegisterAgent>(
         '/api/agent/auth/signup',
-        data
+        requestBody
       )
 
       return response.data

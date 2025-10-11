@@ -17,13 +17,13 @@ export default function VerifyEmailPage() {
   // Check if user has registration data, redirect if not
   useEffect(() => {
     if (!credentials.email || !registrationResult) {
-      router.push('/advisor/signup')
+      router.push('/agent/signup')
     }
   }, [credentials.email, registrationResult, router])
 
   const handleBackToSignup = () => {
     clearRegistrationResult()
-    router.push('/advisor/signup')
+    router.push('/agent/signup')
   }
 
   if (!credentials.email || !registrationResult) {

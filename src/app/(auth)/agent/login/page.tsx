@@ -94,8 +94,8 @@ export default function LoginPage() {
   })
 
   return (
-    <>
-      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl font-black text-transparent md:text-6xl">
+    <div className="flex w-full flex-col justify-center gap-6">
+      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl leading-tight font-black text-transparent md:text-6xl">
         Log In
       </h1>
 
@@ -104,6 +104,7 @@ export default function LoginPage() {
           e.preventDefault()
           form.handleSubmit()
         }}
+        className="w-full"
       >
         <div className="flex w-full flex-col gap-4">
           {/* Email Field */}
@@ -120,6 +121,7 @@ export default function LoginPage() {
                   }}
                   placeholder="Enter your email address"
                   disabled={isLoading}
+                  className="w-full"
                 />
                 <FieldInfo field={field} />
               </div>
@@ -139,6 +141,7 @@ export default function LoginPage() {
                   }}
                   placeholder="Enter your password"
                   disabled={isLoading}
+                  className="w-full"
                 />
                 <FieldInfo field={field} />
               </div>
@@ -162,7 +165,7 @@ export default function LoginPage() {
           </div>
 
           {/* Login Button */}
-          <div className="flex justify-end">
+          <div className="flex w-full justify-end">
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
             >
@@ -170,7 +173,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={!canSubmit || isSubmitting || isLoading}
-                  className="from-primary to-lilac hover:from-primary/90 hover:to-lilac/90 focus:from-primary/90 focus:to-lilac/90 w-fit rounded-full bg-gradient-to-r px-4 text-white"
+                  className="from-primary to-lilac hover:from-primary/90 hover:to-lilac/90 focus:from-primary/90 focus:to-lilac/90 rounded-full bg-gradient-to-r text-white"
                 >
                   {isSubmitting || isLoading ? (
                     <Loader2 className="animate-spin" />
@@ -198,6 +201,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-    </>
+    </div>
   )
 }
