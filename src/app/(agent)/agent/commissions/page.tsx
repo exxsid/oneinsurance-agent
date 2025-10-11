@@ -26,6 +26,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Commission } from '@/types/commission'
 import { cn } from '@/lib/utils'
 import { createSortableHeader, DataTable } from '@/components/ui/data-table'
+import { PRIMARY, SECONDARY, TERTIARY } from '@/components/colors'
 
 const commissionColumns: ColumnDef<Commission>[] = [
   { accessorKey: 'name', header: 'Name' },
@@ -133,7 +134,7 @@ export default function CommissionPage() {
                       x1="0"
                       y1="0"
                       x2="0"
-                      y2="1"
+                      y2="0"
                     >
                       <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.8} />
                       <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
@@ -187,7 +188,27 @@ export default function CommissionPage() {
                   layout="vertical"
                   margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <defs>
+                    <linearGradient
+                      id="colorCommissionByType"
+                      x1="0"
+                      y1="0"
+                      x2="1"
+                      y2="0"
+                    >
+                      <stop offset="5%" stopColor={PRIMARY} stopOpacity={1} />
+                      <stop
+                        offset="95%"
+                        stopColor={SECONDARY}
+                        stopOpacity={1}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    horizontal={false}
+                    vertical={false}
+                  />
                   <XAxis type="number" hide />
                   <YAxis
                     dataKey="name"
@@ -210,7 +231,7 @@ export default function CommissionPage() {
                   />
                   <Bar
                     dataKey="commission"
-                    fill="#818cf8"
+                    fill="url(#colorCommissionByType)"
                     radius={[0, 8, 8, 0]}
                     barSize={20}
                   />
