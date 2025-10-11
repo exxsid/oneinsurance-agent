@@ -7,6 +7,7 @@ import {
   LoginAgentResponse,
   ResetPassword,
   ResetPasswordResponse,
+  ForgotPasswordResponse,
 } from '@/types/agent/auth'
 import axios from 'axios'
 import { useAgentAuthStore } from '@/store/agent-auth-store'
@@ -58,6 +59,23 @@ export function useLoginAgent() {
         data
       )
 
+      return response.data
+    },
+  })
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationKey: ['forgot-password-agent'],
+    mutationFn: async ({
+      data,
+    }: {
+      data: { email: string; redirectUrl: string }
+    }) => {
+      const response = await axios.post<ForgotPasswordResponse>(
+        '/api/agent/auth/forgot-password',
+        data
+      )
       return response.data
     },
   })

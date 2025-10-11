@@ -20,6 +20,7 @@ function ResetPasswordContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const email = searchParams.get('email')
 
   const { mutateAsync: resetPassword, isPending } = useResetPassword()
 
@@ -39,7 +40,7 @@ function ResetPasswordContent() {
 
   const form = useForm({
     defaultValues: {
-      email: '',
+      email: email || '',
       token: token || '',
       password: '',
       confirmPassword: '',
@@ -61,7 +62,7 @@ function ResetPasswordContent() {
 
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          router.push('/agent/login?message=password-reset-success')
+          router.push('/agent/login')
         }, 3000)
       } catch (error: any) {
         console.error('Password reset error:', error)
@@ -124,134 +125,134 @@ function ResetPasswordContent() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8 px-4 sm:px-[10%] md:px-[20%]">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="rounded-full bg-green-100 p-4">
-            <CheckCircle className="h-12 w-12 text-green-600" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Password Reset Successful!
-          </h1>
-          <p className="text-gray-600">
-            Your password has been successfully updated.
-          </p>
-          <p className="text-sm text-gray-500">
-            Redirecting to login page in a few seconds...
-          </p>
+      <div className="flex flex-col items-center justify-center gap-6">
+        <div className="rounded-full bg-green-100 p-4">
+          <CheckCircle className="h-12 w-12 text-green-600" />
         </div>
+        <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
+          Password Reset Successful!
+        </h1>
+        <p className="text-gray-600">
+          Your password has been successfully updated.
+        </p>
+        <p className="text-sm text-gray-500">
+          Redirecting to login page in a few seconds...
+        </p>
       </div>
     )
   }
 
   return (
     <>
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="rounded-full bg-blue-100 p-4">
-          <Lock className="h-12 w-12 text-blue-600" />
+      <div className="flex flex-col justify-center">
+        {/* Header */}
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="rounded-full bg-blue-100 p-4">
+            <Lock className="h-12 w-12 text-blue-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
+            Reset Your Password
+          </h1>
+          <p className="text-gray-600 md:text-lg">
+            Enter your new password below
+          </p>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
-          Reset Your Password
-        </h1>
-        <p className="text-gray-600 md:text-lg">
-          Enter your new password below
-        </p>
-      </div>
 
-      {/* Reset Password Form */}
-      <div className="flex w-full flex-col items-center">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="flex w-full max-w-md flex-col gap-4"
-        >
-          <form.Field name="password">
-            {(field) => (
-              <div className="flex w-full flex-col gap-2">
-                <Label htmlFor={field.name}>New Password *</Label>
-                <PasswordInput
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Enter your new password"
-                  className={
-                    getFieldErrors('password').length > 0
-                      ? 'border-destructive'
-                      : ''
-                  }
-                />
-                <FieldInfo field={field} />
-                <FieldErrors fieldName="password" />
+        {/* Reset Password Form */}
+        <div className="flex w-full flex-col items-center">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
+            className="flex w-full max-w-md flex-col gap-4"
+          >
+            <form.Field name="password">
+              {(field) => (
+                <div className="flex w-full flex-col gap-2">
+                  <Label htmlFor={field.name}>New Password *</Label>
+                  <PasswordInput
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Enter your new password"
+                    className={
+                      getFieldErrors('password').length > 0
+                        ? 'border-destructive'
+                        : ''
+                    }
+                  />
+                  <FieldInfo field={field} />
+                  <FieldErrors fieldName="password" />
+                </div>
+              )}
+            </form.Field>
+
+            <form.Field name="confirmPassword">
+              {(field) => (
+                <div className="flex w-full flex-col gap-2">
+                  <Label htmlFor={field.name}>Confirm New Password *</Label>
+                  <PasswordInput
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Confirm your new password"
+                    className={
+                      getFieldErrors('confirmPassword').length > 0
+                        ? 'border-destructive'
+                        : ''
+                    }
+                  />
+                  <FieldInfo field={field} />
+                  <FieldErrors fieldName="confirmPassword" />
+                </div>
+              )}
+            </form.Field>
+
+            {/* General Error Display */}
+            {error && (
+              <div className="bg-destructive/15 text-destructive flex items-start gap-2 rounded-md p-3 text-sm">
+                <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                <span>{error}</span>
               </div>
             )}
-          </form.Field>
 
-          <form.Field name="confirmPassword">
-            {(field) => (
-              <div className="flex w-full flex-col gap-2">
-                <Label htmlFor={field.name}>Confirm New Password *</Label>
-                <PasswordInput
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Confirm your new password"
-                  className={
-                    getFieldErrors('confirmPassword').length > 0
-                      ? 'border-destructive'
-                      : ''
-                  }
-                />
-                <FieldInfo field={field} />
-                <FieldErrors fieldName="confirmPassword" />
-              </div>
-            )}
-          </form.Field>
+            {/* Submit Button */}
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || isPending}
+                  className="from-primary to-tertiary w-full rounded-full bg-gradient-to-r text-white"
+                >
+                  {isSubmitting || isPending ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Resetting Password...
+                    </>
+                  ) : (
+                    'Reset Password'
+                  )}
+                </Button>
+              )}
+            </form.Subscribe>
+          </form>
+        </div>
 
-          {/* General Error Display */}
-          {error && (
-            <div className="bg-destructive/15 text-destructive flex items-start gap-2 rounded-md p-3 text-sm">
-              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {/* Submit Button */}
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
-          >
-            {([canSubmit, isSubmitting]) => (
-              <Button
-                type="submit"
-                disabled={!canSubmit || isSubmitting || isPending}
-                className="from-primary to-tertiary w-full rounded-full bg-gradient-to-r text-white"
-              >
-                {isSubmitting || isPending ? (
-                  <>
-                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Resetting Password...
-                  </>
-                ) : (
-                  'Reset Password'
-                )}
-              </Button>
-            )}
-          </form.Subscribe>
-        </form>
-      </div>
-
-      {/* Help Text */}
-      <div className="text-center text-sm text-gray-500">
-        <p>
-          Remember your password?{' '}
-          <button
-            onClick={() => router.push('/sign-in')}
-            className="text-blue-600 underline hover:text-blue-800"
-          >
-            Back to Login
-          </button>
-        </p>
+        {/* Help Text */}
+        <div className="text-center text-sm text-gray-500">
+          <p>
+            Remember your password?{' '}
+            <button
+              onClick={() => router.push('/sign-in')}
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              Back to Login
+            </button>
+          </p>
+        </div>
       </div>
     </>
   )

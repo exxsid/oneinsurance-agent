@@ -20,9 +20,9 @@ export default function AuthLayout({
       {/* Dark overlay to make background darker */}
       <div className="absolute inset-0 z-5 bg-black/50"></div>
 
-      <div className="relative z-10 grid w-full lg:grid-cols-2">
+      <div className="relative z-10 grid min-h-screen w-full lg:grid-cols-2">
         {/* Left column: auth card (on large screens this will be on the left) */}
-        <div className="flex items-center justify-start px-4 py-8">
+        <div className="flex min-h-screen w-full items-center justify-center px-4 py-8">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-10">
             <div className="mb-6 flex items-center justify-between">
               <Image
@@ -41,7 +41,7 @@ export default function AuthLayout({
               />
             </div>
 
-            <div className="flex w-full items-start justify-start">
+            <div className="flex w-full items-center justify-center">
               {children}
             </div>
           </div>

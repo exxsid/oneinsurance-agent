@@ -19,14 +19,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const url = `${process.env.BASE_URL}/agent/forgot-password`
+    const url = `${process.env.BASE_URL}/auth/forgot-password`
     const response = await axios.post(url, body, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
 
-    return response.data
+    return NextResponse.json(response.data, { status: 200, headers })
   } catch (error: any) {
     console.error('Forgot password error:', error)
     if (axios.isAxiosError(error)) {

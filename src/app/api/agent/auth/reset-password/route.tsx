@@ -1,7 +1,7 @@
-import { ResetPasswordSchema } from '@/types/agent/auth'
+import { ResetPasswordResponse, ResetPasswordSchema } from '@/types/agent/auth'
 import { handleServerSideAxiosError } from '@/utils/server-side-axios-error-handler'
 import axios from 'axios'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -24,14 +24,23 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const url = `${process.env.BASE_URL}/agent/change-password`
-    const response = await axios.post(url, parsedBody.data, {
-      headers: {
-        'Content-Type': 'application/json',
+    const url = `${process.env.BASE_URL}/auth/change-password`
+    const response = await axios.post<ResetPasswordResponse>(
+      url,
+      {
+        email: parsedBody.data.email,
+        token: parsedBody.data.token,
+        password: parsedBody.data.password,
+        password_confirmation: parsedBody.data.confirmPassword,
       },
-    })
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
-    return response.data
+    return NextResponse.json(response.data, { status: 200, headers })
   } catch (error: any) {
     console.error('Reset password error:', error)
     if (axios.isAxiosError(error)) {

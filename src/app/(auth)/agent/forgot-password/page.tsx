@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label'
 import { FieldInfo } from '@/components/ui/form'
 import axios from 'axios'
 import { z } from 'zod'
+import { useForgotPassword } from '@/app/data/mutations/agent/auth-agent'
+import { toast } from 'sonner'
 
 const ForgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -21,6 +23,7 @@ export default function ForgotPasswordPage() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false)
+  const { mutateAsync: forgotPassword } = useForgotPassword()
 
   const form = useForm({
     defaultValues: { email: '' },
@@ -33,13 +36,15 @@ export default function ForgotPasswordPage() {
           email: value.email,
           redirectUrl: `${window.location.origin}/agent/reset-password`,
         }
-        const result = await axios.post(
-          '/api/agent/auth/forgot-password',
-          requestBody
-        )
-        console.log('Forgot password response:', result.data)
+        const result = await forgotPassword({
+          data: {
+            email: requestBody.email,
+            redirectUrl: requestBody.redirectUrl,
+          },
+        })
+        console.log('Forgot password response:', result)
+        toast.success(result.message)
         setSuccess(true)
-        setTimeout(() => router.push('/agent/login'), 3000)
       } catch (err: any) {
         console.error('Forgot password error:', err)
         setError(
@@ -53,7 +58,7 @@ export default function ForgotPasswordPage() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6 px-4 sm:px-[10%] md:px-[20%]">
+      <div className="flex flex-col items-center justify-center gap-6">
         <div className="rounded-full bg-green-100 p-4">
           <Mail className="h-10 w-10 text-green-600" />
         </div>
@@ -62,13 +67,12 @@ export default function ForgotPasswordPage() {
           If an account with that email exists, you'll receive instructions to
           reset your password.
         </p>
-        <p className="text-sm text-gray-500">Redirecting to login...</p>
       </div>
     )
   }
 
   return (
-    <div className="flex max-w-[50%] flex-col items-center justify-center gap-4">
+    <div className="flex w-full flex-col items-center justify-center gap-4">
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
           <Mail className="h-8 w-8 text-blue-600" />
