@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
@@ -28,6 +28,7 @@ export default function LoginPage() {
   const { mutateAsync: loginAgent } = useLoginAgent()
   const { login, isAuthenticated } = useAgentAuthStore()
   const [hydrated, setHydrated] = useState(false)
+  const search = useSearchParams()
 
   useEffect(() => {
     setHydrated(true)
@@ -39,6 +40,12 @@ export default function LoginPage() {
       // Redirect to login page if not authenticated
       router.push('/agent/dashboard')
       return
+    }
+
+    if (search.get('message')) {
+      toast.success(
+        search.get('message') || 'Successful resetting your password'
+      )
     }
   }, [isAuthenticated, router, hydrated])
 

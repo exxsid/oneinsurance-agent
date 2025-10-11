@@ -39,6 +39,7 @@ function ResetPasswordContent() {
 
   const form = useForm({
     defaultValues: {
+      email: '',
       token: token || '',
       password: '',
       confirmPassword: '',
@@ -60,7 +61,7 @@ function ResetPasswordContent() {
 
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          router.push('/sign-in?message=password-reset-success')
+          router.push('/agent/login?message=password-reset-success')
         }, 3000)
       } catch (error: any) {
         console.error('Password reset error:', error)

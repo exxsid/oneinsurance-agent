@@ -1,6 +1,7 @@
+import { ResetPasswordSchema } from '@/types/agent/auth'
 import { handleServerSideAxiosError } from '@/utils/server-side-axios-error-handler'
 import axios from 'axios'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -10,17 +11,21 @@ const headers = {
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
+  const parsedBody = ResetPasswordSchema.safeParse(body)
 
-  if (!body.email || !body.redirectUrl) {
+  if (!parsedBody.success) {
     return new Response(
-      JSON.stringify({ message: 'Email and redirectUrl are required.' }),
+      JSON.stringify({
+        message: 'Invalid request data',
+        errors: parsedBody.error.flatten().fieldErrors,
+      }),
       { status: 400, headers }
     )
   }
 
   try {
-    const url = `${process.env.BASE_URL}/agent/forgot-password`
-    const response = await axios.post(url, body, {
+    const url = `${process.env.BASE_URL}/agent/change-password`
+    const response = await axios.post(url, parsedBody.data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -28,14 +33,14 @@ export async function POST(req: NextRequest) {
 
     return response.data
   } catch (error: any) {
-    console.error('Forgot password error:', error)
+    console.error('Reset password error:', error)
     if (axios.isAxiosError(error)) {
       return handleServerSideAxiosError(error)
     }
 
-    return NextResponse.json(
-      { message: error },
-      { status: error.response?.status, headers }
-    )
+    return new Response(JSON.stringify({ message: error.message }), {
+      status: error.response?.status,
+      headers,
+    })
   }
 }
