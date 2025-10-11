@@ -40,7 +40,7 @@ export default function AuthLayout({
                   className="object-contain"
                 />
               </div>
-              {children}
+              <div className="flex items-center justify-center">{children}</div>
             </div>
           </div>
         </div>
