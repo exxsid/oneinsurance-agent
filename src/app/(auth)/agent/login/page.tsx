@@ -88,7 +88,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex w-full flex-col justify-center gap-6">
-      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl leading-tight font-black text-transparent md:text-6xl">
+      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl leading-tight font-black text-transparent md:text-4xl lg:text-5xl">
         Log In
       </h1>
 
@@ -104,7 +104,9 @@ export default function LoginPage() {
           <form.Field name="email">
             {(field) => (
               <div className="flex w-full flex-col gap-2">
-                <Label htmlFor={field.name}>Email *</Label>
+                <Label htmlFor={field.name} className="required-field">
+                  Email
+                </Label>
                 <Input
                   name={field.name}
                   type="email"
@@ -125,7 +127,9 @@ export default function LoginPage() {
           <form.Field name="password">
             {(field) => (
               <div className="flex w-full flex-col gap-2">
-                <Label htmlFor={field.name}>Password *</Label>
+                <Label htmlFor={field.name} className="required-field">
+                  Password
+                </Label>
                 <PasswordInput
                   name={field.name}
                   value={field.state.value}

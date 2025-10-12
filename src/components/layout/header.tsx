@@ -55,11 +55,10 @@ export const Header = ({
   const navigations = isNavigationVisible
     ? (rest as WithNavigationProps).navigations
     : []
-  const { user } = useAgentAuthStore()
+  const { user, isAuthenticated } = useAgentAuthStore()
   const { mutateAsync: logoutAgent } = useLogoutAgent()
 
   const { isMobile } = useSidebar()
-  const isSingIn = isLoggedIn ?? isSingedin()
 
   return (
     <header
@@ -142,7 +141,7 @@ export const Header = ({
 
           <ThemeToggle />
 
-          {isSingIn ? (
+          {isAuthenticated ? (
             <div className="flex items-center gap-3">
               <Button variant="secondary" size="icon" className="relative py-2">
                 <Bell className="h-5 w-5" />

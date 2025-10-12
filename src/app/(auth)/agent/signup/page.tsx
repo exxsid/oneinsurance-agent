@@ -115,79 +115,35 @@ export default function SignUpPage() {
   })
 
   return (
-    <>
-      <div className="flex w-full flex-col justify-center gap-6">
-        <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl leading-tight font-black text-transparent md:text-6xl">
-          Sign Up
-        </h1>
+    <div className="flex w-full flex-col justify-center gap-6">
+      <h1 className="from-primary to-lilac w-fit bg-gradient-to-r bg-clip-text py-2 text-3xl leading-tight font-black text-transparent md:text-4xl lg:text-5xl">
+        Sign Up
+      </h1>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="w-full"
-        >
-          <div className="flex w-full flex-col gap-4">
-            <div className="grid gap-4 lg:grid-cols-2">
-              <form.Field name="firstName">
-                {(field) => (
-                  <div className="flex w-full flex-col gap-2">
-                    <Label htmlFor={field.name}>First Name *</Label>
-                    <Input
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => {
-                        field.handleChange(e.target.value)
-                      }}
-                      placeholder="Enter your first name"
-                      className={
-                        getFieldErrors('firstName').length > 0
-                          ? 'border-destructive'
-                          : ''
-                      }
-                    />
-                    <FieldInfo field={field} />
-                  </div>
-                )}
-              </form.Field>
-
-              <form.Field name="lastName">
-                {(field) => (
-                  <div className="flex w-full flex-col gap-2">
-                    <Label htmlFor={field.name}>Last Name *</Label>
-                    <Input
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => {
-                        field.handleChange(e.target.value)
-                      }}
-                      placeholder="Enter your last name"
-                      className={
-                        getFieldErrors('lastName').length > 0
-                          ? 'border-destructive'
-                          : ''
-                      }
-                    />
-                    <FieldInfo field={field} />
-                  </div>
-                )}
-              </form.Field>
-            </div>
-
-            <form.Field name="email">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          form.handleSubmit()
+        }}
+        className="w-full"
+      >
+        <div className="flex w-full flex-col gap-4">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <form.Field name="firstName">
               {(field) => (
                 <div className="flex w-full flex-col gap-2">
-                  <Label htmlFor={field.name}>Email *</Label>
+                  <Label htmlFor={field.name} className="required-field">
+                    First Name
+                  </Label>
                   <Input
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => {
                       field.handleChange(e.target.value)
                     }}
-                    placeholder="Enter Email"
+                    placeholder="Enter your first name"
                     className={
-                      getFieldErrors('email').length > 0
+                      getFieldErrors('firstName').length > 0
                         ? 'border-destructive'
                         : ''
                     }
@@ -197,19 +153,21 @@ export default function SignUpPage() {
               )}
             </form.Field>
 
-            <form.Field name="phone">
+            <form.Field name="lastName">
               {(field) => (
                 <div className="flex w-full flex-col gap-2">
-                  <Label htmlFor={field.name}>Phone *</Label>
+                  <Label htmlFor={field.name} className="required-field">
+                    Last Name
+                  </Label>
                   <Input
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => {
                       field.handleChange(e.target.value)
                     }}
-                    placeholder="Enter your phone number"
+                    placeholder="Enter your last name"
                     className={
-                      getFieldErrors('phone').length > 0
+                      getFieldErrors('lastName').length > 0
                         ? 'border-destructive'
                         : ''
                     }
@@ -218,107 +176,159 @@ export default function SignUpPage() {
                 </div>
               )}
             </form.Field>
-
-            <form.Field name="password">
-              {(field) => (
-                <div className="flex w-full flex-col gap-2">
-                  <Label htmlFor={field.name}>Password *</Label>
-                  <PasswordInput
-                    name={field.name}
-                    value={field.state.value}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value)
-                    }}
-                    placeholder="Create password"
-                    className={
-                      getFieldErrors('password').length > 0
-                        ? 'border-destructive'
-                        : ''
-                    }
-                  />
-                  <FieldInfo field={field} />
-                </div>
-              )}
-            </form.Field>
-
-            <form.Field name="confirmPassword">
-              {(field) => (
-                <div className="flex w-full flex-col gap-2">
-                  <Label htmlFor={field.name}>Confirm Password *</Label>
-                  <PasswordInput
-                    name={field.name}
-                    value={field.state.value}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value)
-                    }}
-                    placeholder="Confirm password"
-                    className={
-                      getFieldErrors('confirmPassword').length > 0
-                        ? 'border-destructive'
-                        : ''
-                    }
-                  />
-                  <FieldInfo field={field} />
-                </div>
-              )}
-            </form.Field>
-
-            {registrationError && (
-              <div className="bg-destructive/15 text-destructive rounded-md p-3 text-sm">
-                {registrationError}
-                {validationErrors &&
-                  Object.entries(validationErrors).map(([field, errors]) => (
-                    <div key={field}>
-                      <strong>{field}:</strong> {errors.join(', ')}
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            {registrationResult && (
-              <div className="rounded-md bg-green-50 p-3 text-sm text-green-600">
-                Registration successful! Welcome,{' '}
-                {registrationResult.data.first_name}!
-              </div>
-            )}
-
-            <div className="flex w-full justify-end">
-              <form.Subscribe
-                selector={(state) => [state.canSubmit, state.isSubmitting]}
-              >
-                {([canSubmit, isSubmitting]) => (
-                  <Button
-                    type="submit"
-                    disabled={!canSubmit || isSubmitting || isRegistering}
-                    className="from-primary to-lilac hover:from-primary/90 hover:to-lilac/90 focus:from-primary/90 focus:to-lilac/90 rounded-full bg-gradient-to-r text-white"
-                  >
-                    {isSubmitting || isRegistering ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      <span className="px-5">Sign Up</span>
-                    )}
-                  </Button>
-                )}
-              </form.Subscribe>
-            </div>
           </div>
-        </form>
 
-        {/* Additional Actions */}
-        <div className="flex w-full items-center justify-start py-4">
-          <div className="text-muted-foreground flex flex-col items-start gap-2 text-sm">
-            <p>
-              Already have an account?{' '}
-              <Link
-                href="/agent/login"
-                className="hover:text-primary text-blue-800 underline underline-offset-4"
-              >
-                Log In Here
-              </Link>
-            </p>
+          <form.Field name="email">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name} className="required-field">
+                  Email
+                </Label>
+                <Input
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  placeholder="Enter Email"
+                  className={
+                    getFieldErrors('email').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="phone">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name} className="required-field">
+                  Phone
+                </Label>
+                <Input
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  placeholder="Enter your phone number"
+                  className={
+                    getFieldErrors('phone').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="password">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name} className="required-field">
+                  Password
+                </Label>
+                <PasswordInput
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  placeholder="Create password"
+                  className={
+                    getFieldErrors('password').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="confirmPassword">
+            {(field) => (
+              <div className="flex w-full flex-col gap-2">
+                <Label htmlFor={field.name} className="required-field">
+                  Confirm Password
+                </Label>
+                <PasswordInput
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                  }}
+                  placeholder="Confirm password"
+                  className={
+                    getFieldErrors('confirmPassword').length > 0
+                      ? 'border-destructive'
+                      : ''
+                  }
+                />
+                <FieldInfo field={field} />
+              </div>
+            )}
+          </form.Field>
+
+          {registrationError && (
+            <div className="bg-destructive/15 text-destructive rounded-md p-3 text-sm">
+              {registrationError}
+              {validationErrors &&
+                Object.entries(validationErrors).map(([field, errors]) => (
+                  <div key={field}>
+                    <strong>{field}:</strong> {errors.join(', ')}
+                  </div>
+                ))}
+            </div>
+          )}
+
+          {registrationResult && (
+            <div className="rounded-md bg-green-50 p-3 text-sm text-green-600">
+              Registration successful! Welcome,{' '}
+              {registrationResult.data.first_name}!
+            </div>
+          )}
+
+          <div className="flex w-full justify-end">
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || isRegistering}
+                  className="from-primary to-lilac hover:from-primary/90 hover:to-lilac/90 focus:from-primary/90 focus:to-lilac/90 rounded-full bg-gradient-to-r text-white"
+                >
+                  {isSubmitting || isRegistering ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <span className="px-5">Sign Up</span>
+                  )}
+                </Button>
+              )}
+            </form.Subscribe>
           </div>
         </div>
+      </form>
+
+      {/* Additional Actions */}
+      <div className="flex w-full items-center justify-start py-4">
+        <div className="text-muted-foreground flex flex-col items-start gap-2 text-sm">
+          <p>
+            Already have an account?{' '}
+            <Link
+              href="/agent/login"
+              className="hover:text-primary text-blue-800 underline underline-offset-4"
+            >
+              Log In Here
+            </Link>
+          </p>
+        </div>
       </div>
-    </>
+    </div>
   )
 }

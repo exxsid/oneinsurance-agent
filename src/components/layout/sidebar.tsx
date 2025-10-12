@@ -62,9 +62,7 @@ export const AppSidebar = ({
   isBrandVisible = true,
   ...props
 }: AppSidebarProps) => {
-  const isSignIn = isSingedin()
   const isMobile = useIsMobile()
-
   const pathname = usePathname()
 
   const getIcon = (label: string) => {
