@@ -85,6 +85,7 @@ export const AGENT_NAVIGATIONS = [
   },
 
   { type: 'single', label: 'Policies', link: '/product-management' },
+  { type: 'single', label: 'Referral Links', link: '/referrals' },
   { type: 'single', label: 'Support', link: '/contact' },
   { type: 'single', label: 'Settings', link: '/settings' },
 ] satisfies NavigationItem[]
