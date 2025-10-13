@@ -48,7 +48,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/agent/dashboard')
+      router.push('/')
     }
   }, [isAuthenticated, router])
 
@@ -74,7 +74,7 @@ export default function SignUpPage() {
         // Store the result
         setRegistrationResult(result)
 
-        router.push('/agent/verify-email')
+        router.push('/verify-email')
       } catch (error: any) {
         console.error('Registration error:', error)
 
@@ -321,7 +321,7 @@ export default function SignUpPage() {
           <p>
             Already have an account?{' '}
             <Link
-              href="/agent/login"
+              href="/login"
               className="hover:text-primary text-blue-800 underline underline-offset-4"
             >
               Log In Here

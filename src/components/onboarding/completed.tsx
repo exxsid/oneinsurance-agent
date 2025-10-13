@@ -69,7 +69,7 @@ export function AgentOnboardingSuccess({ agent }: AgentOnboardingSuccessProps) {
           </div>
 
           <Button className="text-white" size="lg" asChild>
-            <Link href="/dashboard">
+            <Link href="/">
               Go to your dashboard <MoveUpRight />
             </Link>
           </Button>

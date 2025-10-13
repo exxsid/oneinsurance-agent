@@ -62,7 +62,7 @@ function ResetPasswordContent() {
 
         // Redirect to login after 3 seconds
         setTimeout(() => {
-          router.push('/agent/login')
+          router.push('/login')
         }, 3000)
       } catch (error: any) {
         console.error('Password reset error:', error)

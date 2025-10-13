@@ -67,7 +67,7 @@ export default function NewInquiryPage() {
             </p>
 
             <Button className="mt-4 h-11 bg-black px-8 text-white" asChild>
-              <Link href="/dashboard">
+              <Link href="/">
                 Go to dashboard
                 <MoveUpRight />
               </Link>

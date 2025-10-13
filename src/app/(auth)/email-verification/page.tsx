@@ -47,11 +47,11 @@ function EmailVerificationContent() {
   }, [code, message])
 
   const handleBackToLogin = () => {
-    router.push('/agent/login')
+    router.push('/login')
   }
 
   const handleBackToSignup = () => {
-    router.push('/agent/signup')
+    router.push('/signup')
   }
 
   const getStatusIcon = () => {

@@ -169,7 +169,7 @@ export const Header = ({
                       const response = await logoutAgent()
                       toast.info(response.message)
                       removeLocalStorage('agent-auth-storage')
-                      window.location.href = '/agent/login'
+                      window.location.href = '/login'
                     }}
                   >
                     Logout

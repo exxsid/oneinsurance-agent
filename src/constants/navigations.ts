@@ -50,22 +50,22 @@ export const NAVIGATIONS = [
 ] satisfies NavigationItem[]
 
 export const AGENT_NAVIGATIONS = [
-  { type: 'single', label: 'Dashboard', link: '/agent/dashboard' },
+  { type: 'single', label: 'Dashboard', link: '/' },
   {
     type: 'multiple',
     label: 'Clients',
     items: [
       {
         title: 'Clients',
-        link: '/agent/client-management',
+        link: '/client-management',
       },
       {
         title: 'Applications',
-        link: '/agent/applications',
+        link: '/applications',
       },
       {
         title: 'Quotations',
-        link: '/agent/quotations',
+        link: '/quotations',
       },
     ],
   },
@@ -75,18 +75,18 @@ export const AGENT_NAVIGATIONS = [
     items: [
       {
         title: 'Commissions',
-        link: '/agent/commissions',
+        link: '/commissions',
       },
       {
         title: 'Reports',
-        link: '/agent/reports',
+        link: '/reports',
       },
     ],
   },
 
-  { type: 'single', label: 'Policies', link: '/agent/product-management' },
-  { type: 'single', label: 'Support', link: '/agent/contact' },
-  { type: 'single', label: 'Settings', link: '/agent/settings' },
+  { type: 'single', label: 'Policies', link: '/product-management' },
+  { type: 'single', label: 'Support', link: '/contact' },
+  { type: 'single', label: 'Settings', link: '/settings' },
 ] satisfies NavigationItem[]
 
 export const ADMIN_NAVIGATIONS = [

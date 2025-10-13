@@ -37,7 +37,7 @@ export default function LoginPage() {
     // Check if agent is authenticated
     if (isAuthenticated && hydrated) {
       // Redirect to login page if not authenticated
-      router.push('/agent/dashboard')
+      router.push('/')
       return
     }
   }, [isAuthenticated, router, hydrated])
@@ -64,7 +64,7 @@ export default function LoginPage() {
         toast.success(`Welcome back, ${result.data.user.name}!`)
 
         // Redirect to agent dashboard
-        router.push('/agent/dashboard')
+        router.push('/')
       } catch (error: any) {
         console.error('Login error:', error)
 
@@ -154,7 +154,7 @@ export default function LoginPage() {
 
           <div className="text-muted-foreground flex justify-end text-sm">
             <Link
-              href="/agent/forgot-password"
+              href="/forgot-password"
               className="hover:text-primary underline underline-offset-4"
             >
               Forgot your password?
@@ -190,7 +190,7 @@ export default function LoginPage() {
           <p>
             Don't have an account?{' '}
             <Link
-              href="/agent/signup"
+              href="/signup"
               className="hover:text-primary underline underline-offset-4"
             >
               Sign up now!

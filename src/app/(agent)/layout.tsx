@@ -26,7 +26,7 @@ export default function AgentLayout({
     // Check if agent is authenticated
     if (!isAuthenticated && hydrated) {
       // Redirect to login page if not authenticated
-      router.push('/agent/login')
+      router.push('/login')
       return
     }
   }, [isAuthenticated, router, hydrated])
