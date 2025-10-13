@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'One Insurance | Agent Product Management',
+  title: 'One Insurance | Agent Verify Email',
   description: 'One Insurance',
 }
 
-export default function AgentProductManagementLayout({
+export default function VerifyEmailLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
-  return <div>{children}</div>
+}>) {
+  return <>{children}</>
 }

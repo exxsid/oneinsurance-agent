@@ -20,6 +20,7 @@ export default function AgentLayout({
 
   useEffect(() => {
     setHydrated(true)
+    document.title = 'One Insurance | Agent Dashboard'
   }, [])
 
   useEffect(() => {
