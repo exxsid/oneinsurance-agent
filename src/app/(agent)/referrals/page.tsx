@@ -27,7 +27,7 @@ export default function ReferralsPage() {
           id: 'travel-insurance',
           companyName: 'Travel Insurance',
           image: '/images/IFRC.png',
-          url: `https://ifrc.intel-soln.com.ph/products/travel-insurance?ref-code=${referralCode}`,
+          url: `https://ifrc.intel-soln.com.ph/${referralCode}/products/travel-insurance`,
           description: 'Insurance Without Borders',
         },
       ]
