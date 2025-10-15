@@ -11,6 +11,7 @@ import {
 } from '@/types/agent/auth'
 import axios from 'axios'
 import { useAgentAuthStore } from '@/store/agent-auth-store'
+import { removeLocalStorage } from '@/utils/remove-session-storage'
 
 export function useRegisterAgent() {
   return useMutation({
@@ -100,17 +101,30 @@ export function useLogoutAgent() {
   return useMutation({
     mutationKey: ['logout-agent'],
     mutationFn: async () => {
-      const response = await axios.post(
-        '/api/agent/auth/logout',
-        {},
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
+      try {
+        const response = await axios.post(
+          '/api/agent/auth/logout',
+          {},
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
 
-      return response.data
+        return response.data
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          switch (error.response?.status) {
+            case 401:
+              removeLocalStorage('agent-auth-storage')
+              window.location.href = '/login'
+              return
+          }
+        }
+
+        throw error
+      }
     },
   })
 }

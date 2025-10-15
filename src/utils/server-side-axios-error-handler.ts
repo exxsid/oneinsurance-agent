@@ -29,7 +29,7 @@ export function handleServerSideAxiosError(error: AxiosError) {
       )
     case 401:
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        error.response?.data || { error: 'Unauthorized' },
         {
           status: 401,
           headers: {
