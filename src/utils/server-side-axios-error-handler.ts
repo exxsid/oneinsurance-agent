@@ -51,6 +51,18 @@ export function handleServerSideAxiosError(error: AxiosError) {
           },
         }
       )
+    case 403:
+      return NextResponse.json(
+        error.response?.data || { message: 'Forbidden' },
+        {
+          status: 403,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          },
+        }
+      )
     default:
       return NextResponse.json(error.response, {
         status: error.status || 500,

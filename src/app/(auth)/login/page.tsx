@@ -20,6 +20,7 @@ import {
 import { useLoginAgent } from '@/app/data/mutations/agent/auth-agent'
 import { useAgentAuthStore } from '@/store/agent-auth-store'
 import { toast } from 'sonner'
+import { NotVerifiedEmailError } from '@/lib/errors'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -66,7 +67,10 @@ export default function LoginPage() {
         // Redirect to agent dashboard
         router.push('/')
       } catch (error: any) {
-        console.error('Login error:', error)
+        if (error instanceof NotVerifiedEmailError) {
+          setLoginError(error.message)
+          return
+        }
 
         // Handle different types of errors
         if (error?.response?.status === 422) {
