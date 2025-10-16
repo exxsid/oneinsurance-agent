@@ -69,10 +69,25 @@ export default function SignUpPage() {
         setCredentials(value)
 
         // Call the API
-        const result = await registerAgent({ data: value as RegisterAgent })
+        // const result = await registerAgent({ data: value as RegisterAgent })
 
         // Store the result
-        setRegistrationResult(result)
+        // TODO: Remove mock data
+        setRegistrationResult({
+          success: true,
+          message: 'Registration successful',
+          data: {
+            role: 20,
+            first_name: value.firstName,
+            last_name: value.lastName,
+            email: value.email,
+            phone: value.phone,
+            designation: 'Agent',
+            updated_at: new Date().toISOString(),
+            created_at: new Date().toISOString(),
+            id: Math.floor(Math.random() * 1000),
+          },
+        })
 
         router.push('/verify-email')
       } catch (error: any) {
