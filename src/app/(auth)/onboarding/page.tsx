@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/layout/header'
 import BankDetailsForm from '@/components/onboarding-v2/bank-details-form'
+import VerificationDocumentsForm from '@/components/onboarding-v2/verification-documents-form'
 import SignatureForm from '@/components/onboarding/advisor-signature-form'
 import CommissionPaymentReferenceForm from '@/components/onboarding/commission-payment-reference-form'
 import CompanyDetailsForm from '@/components/onboarding/company-details-form'
@@ -31,6 +32,10 @@ export default function OnboardingPage() {
     {
       title: 'Bank Details for Commission',
       form: <BankDetailsForm />,
+    },
+    {
+      title: 'Verification Documents',
+      form: <VerificationDocumentsForm />,
     },
   ]
 

@@ -58,12 +58,26 @@ export const bankDetailsSchema = onboardingV2BaseSchema.pick({
 export type BankDetails = z.infer<typeof bankDetailsSchema>
 
 // Extract only verification document fields
-export const verificationDocumentsSchema = onboardingV2BaseSchema.pick({
-  idType: true,
-  idNumber: true,
-  licenseNumber: true,
-  certificateNumber: true,
-  confirmInfo: true,
-  authorizeCompany: true,
-})
+export const verificationDocumentsSchema = onboardingV2BaseSchema
+  .pick({
+    idType: true,
+    idNumber: true,
+    licenseNumber: true,
+    certificateNumber: true,
+    confirmInfo: true,
+    authorizeCompany: true,
+  })
+  .superRefine((data, ctx) => {
+    const validator = formatValidators[data.idType]
+    if (validator) {
+      const result = validator.safeParse(data.idNumber)
+      if (!result.success) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: result.error.errors[0].message,
+          path: ['idNumber'],
+        })
+      }
+    }
+  })
 export type VerificationDocuments = z.infer<typeof verificationDocumentsSchema>

@@ -10,22 +10,16 @@ import { FieldInfo } from '@/components/ui/form'
 import { useOnboardingV2Store } from '@/store/onboarding-store-v2'
 
 export default function BankDetailsForm() {
-  const { increaseStep } = useOnboardingV2Store()
+  const { bankDetails, increaseStep, setBankDetails } = useOnboardingV2Store()
 
   const form = useForm({
-    defaultValues: {
-      bankName: '',
-      bankCode: '',
-      routingNumber: '',
-      accountHolderName: '',
-      accountNumber: '',
-      accountType: 'savings' as 'savings' | 'current',
-    },
+    defaultValues: bankDetails,
     validators: {
       onChange: bankDetailsSchema,
     },
     onSubmit: ({ value }) => {
       console.log(value)
+      setBankDetails(value)
       increaseStep()
     },
   })

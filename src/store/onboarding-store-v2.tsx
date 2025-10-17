@@ -1,31 +1,42 @@
-import { OnboardingV2 } from '@/types/onboarding-v2'
+import {
+  BankDetails,
+  OnboardingV2,
+  VerificationDocuments,
+} from '@/types/onboarding-v2'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-type OnboardingState = OnboardingV2 & {
+type OnboardingState = {
   step: number
+  bankDetails: BankDetails
+  verificationDocuments: VerificationDocuments
 }
 
 type OnboardingActions = {
   increaseStep: () => void
   decreaseStep: () => void
-  setData: (data: Partial<OnboardingV2>) => void
+  setBankDetails: (data: BankDetails) => void
+  setVerificationDocuments: (data: VerificationDocuments) => void
 }
 
 const initialState: OnboardingState = {
   step: 0,
-  bankName: '',
-  bankCode: '',
-  routingNumber: '',
-  accountHolderName: '',
-  accountNumber: '',
-  accountType: 'savings',
-  idType: 'PAS',
-  idNumber: '',
-  licenseNumber: '',
-  certificateNumber: '',
-  confirmInfo: false,
-  authorizeCompany: false,
+  bankDetails: {
+    bankName: '',
+    bankCode: '',
+    routingNumber: '',
+    accountHolderName: '',
+    accountNumber: '',
+    accountType: 'savings',
+  },
+  verificationDocuments: {
+    idType: 'PAS',
+    idNumber: '',
+    licenseNumber: '',
+    certificateNumber: '',
+    confirmInfo: false,
+    authorizeCompany: false,
+  },
 }
 
 export const useOnboardingV2Store = create<
@@ -42,10 +53,15 @@ export const useOnboardingV2Store = create<
         set((state) => ({
           step: state.step - 1,
         })),
-      setData: (data: Partial<OnboardingV2>) =>
+      setBankDetails: (data: BankDetails) =>
         set((state) => ({
           ...state,
-          ...data,
+          bankDetails: { ...state.bankDetails, ...data },
+        })),
+      setVerificationDocuments: (data: VerificationDocuments) =>
+        set((state) => ({
+          ...state,
+          verificationDocuments: { ...state.verificationDocuments, ...data },
         })),
     }),
     {
