@@ -20,10 +20,10 @@ export default function AuthLayout({
 
       <div className="absolute inset-0 z-5 bg-black/50" />
 
-      <div className="relative z-10 grid min-h-screen w-full lg:grid-cols-2">
+      <div className="relative z-10 grid min-h-screen w-full py-4 lg:grid-cols-2">
         {/* Left column: auth card (on large screens this will be on the left) */}
         <div className="flex min-h-screen w-full items-center justify-center">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-10 lg:max-w-[30rem] dark:bg-black">
+          <div className="dark:bg-card w-full max-w-md rounded-2xl bg-white p-6 sm:p-10 lg:max-w-[30rem]">
             <div className="mb-6 flex items-center justify-between">
               <Image
                 src="/images/logo.png"

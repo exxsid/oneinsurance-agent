@@ -1,37 +1,36 @@
 import { z } from 'zod'
 import { formatValidators, PhilippineIdType } from '@/types/id-types'
 
-export const onboardingV2Schema = z
-  .object({
-    // bank details
-    bankName: z.string().min(1, 'Please enter your bank name'),
-    bankCode: z.string().min(1, 'Please enter your bank code'),
-    routingNumber: z.string().min(1, 'Please enter your bank routing number'),
-    accountHolderName: z
-      .string()
-      .min(1, 'Please enter your account holder name'),
-    accountNumber: z
-      .string()
-      .min(1, 'Please enter your account number')
-      .regex(/^\d+$/, 'Account number must be numeric'),
-    accountType: z.enum(['savings', 'current']),
+// Base object schema without superRefine
+const onboardingV2BaseSchema = z.object({
+  // bank details
+  bankName: z.string().min(1, 'Please enter your bank name'),
+  bankCode: z.string().min(1, 'Please enter your bank code'),
+  routingNumber: z.string().min(1, 'Please enter your bank routing number'),
+  accountHolderName: z.string().min(1, 'Please enter your account holder name'),
+  accountNumber: z
+    .string()
+    .min(1, 'Please enter your account number')
+    .regex(/^\d+$/, 'Account number must be numeric'),
+  accountType: z.enum(['savings', 'current']),
 
-    // verification Documents
-    idType: PhilippineIdType,
-    idNumber: z.string().min(1, 'Please enter your ID number'),
-    licenseNumber: z.string().min(1, 'Please enter your license number'),
-    certificateNumber: z
-      .string()
-      .min(1, 'Please enter your certificate number'),
+  // verification Documents
+  idType: PhilippineIdType,
+  idNumber: z.string().min(1, 'Please enter your ID number'),
+  licenseNumber: z.string().min(1, 'Please enter your license number'),
+  certificateNumber: z.string().min(1, 'Please enter your certificate number'),
 
-    confirmInfo: z.boolean().refine((val) => val === true, {
-      message: 'You must confirm your information',
-    }),
-    authorizeCompany: z.boolean().refine((val) => val === true, {
-      message: 'You must authorize the company',
-    }),
-  })
-  .superRefine((data, ctx) => {
+  confirmInfo: z.boolean().refine((val) => val === true, {
+    message: 'You must confirm your information',
+  }),
+  authorizeCompany: z.boolean().refine((val) => val === true, {
+    message: 'You must authorize the company',
+  }),
+})
+
+// Apply superRefine for custom validation
+export const onboardingV2Schema = onboardingV2BaseSchema.superRefine(
+  (data, ctx) => {
     const validator = formatValidators[data.idType]
     if (validator) {
       const result = validator.safeParse(data.idNumber)
@@ -43,10 +42,12 @@ export const onboardingV2Schema = z
         })
       }
     }
-  })
+  }
+)
 export type OnboardingV2 = z.infer<typeof onboardingV2Schema>
 
-export const bankDetailsSchema = onboardingV2Schema._def.schema.pick({
+// Extract only bank-related fields
+export const bankDetailsSchema = onboardingV2BaseSchema.pick({
   bankName: true,
   bankCode: true,
   routingNumber: true,
@@ -56,7 +57,8 @@ export const bankDetailsSchema = onboardingV2Schema._def.schema.pick({
 })
 export type BankDetails = z.infer<typeof bankDetailsSchema>
 
-export const verificationDocumentsSchema = onboardingV2Schema._def.schema.pick({
+// Extract only verification document fields
+export const verificationDocumentsSchema = onboardingV2BaseSchema.pick({
   idType: true,
   idNumber: true,
   licenseNumber: true,

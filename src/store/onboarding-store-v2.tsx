@@ -28,7 +28,9 @@ const initialState: OnboardingState = {
   authorizeCompany: false,
 }
 
-export const useOnboardingV2Store = create<OnboardingState>()(
+export const useOnboardingV2Store = create<
+  OnboardingState & OnboardingActions
+>()(
   persist(
     (set) => ({
       ...initialState,
