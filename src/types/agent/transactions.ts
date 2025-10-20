@@ -8,7 +8,7 @@ export const TransactionSchema = z.object({
   proposal_number: z.string(),
   policy_id: z.string(),
   merchant_transaction_id: z.string().nullable(),
-  amount: z.number().nullable(),
+  amount: z.number().or(z.string()).nullable(),
   customer_id: z.number().nullable(),
   transaction_status: z.string().nullable(),
   transaction_date: z.string().datetime().nullable(),

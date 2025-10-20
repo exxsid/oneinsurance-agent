@@ -78,10 +78,12 @@ const columns: TableColumn[] = [
     },
   },
   {
-    key: 'created_at',
-    label: 'Created At',
+    key: 'transaction_date',
+    label: 'Transaction Date & Time',
     render: (transaction) =>
-      new Date(transaction.created_at).toLocaleDateString(),
+      transaction.transaction_date
+        ? new Date(transaction.transaction_date).toLocaleString()
+        : 'N/A',
   },
 ]
 

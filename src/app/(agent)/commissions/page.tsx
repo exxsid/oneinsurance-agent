@@ -39,7 +39,7 @@ export default function CommissionPage() {
   const transactions = transactionsResponse?.data?.data || []
 
   const totalCommision = useMemo(() => {
-    return transactions.reduce((sum, t) => sum + (t.amount || 0), 0)
+    return transactions.reduce((sum, t) => sum + (Number(t.amount) || 0), 0)
   }, [transactions])
 
   const commissionThisMonth = useMemo(() => {
@@ -55,7 +55,7 @@ export default function CommissionPage() {
           txDate.getFullYear() === currentYear
         )
       })
-      .reduce((sum, t) => sum + (t.amount || 0), 0)
+      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0)
   }, [transactions])
 
   const policiesSold = useMemo(() => {
@@ -70,7 +70,7 @@ export default function CommissionPage() {
         if (!acc[type]) {
           acc[type] = 0
         }
-        acc[type] += item.amount || 0
+        acc[type] += Number(item.amount) || 0
         return acc
       },
       {} as Record<string, number>
