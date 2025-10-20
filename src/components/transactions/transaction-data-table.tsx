@@ -1,10 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Transaction, TransactionsData } from '@/types/agent/transactions'
 import { cn } from '@/lib/utils'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, Search, X, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +27,8 @@ interface TransactionDataTableProps {
   data: TransactionsData | undefined
   isLoading: boolean
   onPageChange: (page: number) => void
+  onSearch: (keyword: string) => void
+  onClearSearch: () => void
 }
 
 interface TableColumn {
@@ -35,7 +38,6 @@ interface TableColumn {
 }
 
 const columns: TableColumn[] = [
-  { key: 'agent_code_used', label: 'Agent Code' },
   { key: 'proposal_number', label: 'Proposal Number' },
   { key: 'policy_id', label: 'Policy ID' },
   {
@@ -52,7 +54,7 @@ const columns: TableColumn[] = [
     key: 'amount',
     label: 'Amount',
     render: (transaction) =>
-      transaction.amount ? `₱${transaction.amount.toFixed(2)}` : 'N/A',
+      transaction.amount ? `₱${transaction.amount}` : 'N/A',
   },
   {
     key: 'status',
@@ -87,12 +89,63 @@ export function TransactionDataTable({
   data,
   isLoading,
   onPageChange,
+  onSearch,
+  onClearSearch,
 }: TransactionDataTableProps) {
+  const [localSearchTerm, setLocalSearchTerm] = useState('')
   const transactions = data?.data || []
   const total = data?.total || 0
 
+  const handleSearch = () => {
+    console.log('Search triggered with term:', localSearchTerm)
+    if (onSearch) {
+      onSearch(localSearchTerm)
+    }
+  }
+
+  const handleClearSearch = () => {
+    setLocalSearchTerm('')
+    onClearSearch()
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
   return (
     <div className="space-y-4">
+      {/* Search Field */}
+      <div className="flex items-center gap-2">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder="Search by proposal number, policy ID, or customer ID..."
+            value={localSearchTerm}
+            onChange={(e) => setLocalSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="pl-9"
+          />
+        </div>
+        <Button
+          onClick={handleSearch}
+          disabled={isLoading || !localSearchTerm.trim()}
+        >
+          Search
+        </Button>
+        {localSearchTerm && (
+          <Button
+            variant="outline"
+            onClick={handleClearSearch}
+            disabled={isLoading}
+            className="gap-2"
+          >
+            <X className="h-4 w-4" />
+            Clear
+          </Button>
+        )}
+      </div>
       {/* Table */}
       <div className="bg-background rounded-md border">
         <Table>

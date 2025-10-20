@@ -25,10 +25,16 @@ import { monthlyPerformanceData } from '@/constants/commissions'
 import { PRIMARY, SECONDARY } from '@/components/colors'
 import { useGetTransactions } from '@/app/data/queries/transactions'
 import { TransactionDataTable } from '@/components/transactions/transaction-data-table'
+import { useSearchTransactions } from '@/app/data/mutations/agent/transactions'
+import { toast } from 'sonner'
+import { TransactionsResponse } from '@/types/agent/transactions'
 
 export default function CommissionPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const { data: transactionsResponse, isLoading } = useGetTransactions()
+  const { mutateAsync: searchTractions } = useSearchTransactions()
+  const [searchedTransactions, setSearchedTransactions] =
+    useState<TransactionsResponse | null>(null)
 
   const transactions = transactionsResponse?.data?.data || []
 
@@ -74,6 +80,17 @@ export default function CommissionPage() {
       commission,
     }))
   }, [transactions])
+
+  const handleSearch = async (keyword: string) => {
+    try {
+      const result = await searchTractions({ keyword })
+      setSearchedTransactions(result)
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || 'Error searching transactions'
+      )
+    }
+  }
 
   return (
     <div className="relative mx-auto w-full space-y-6">
@@ -233,9 +250,11 @@ export default function CommissionPage() {
       <Card className="bg-background shadow-sm">
         <CardContent className="p-6">
           <TransactionDataTable
-            data={transactionsResponse?.data}
+            data={searchedTransactions?.data || transactionsResponse?.data}
             isLoading={isLoading}
             onPageChange={setCurrentPage}
+            onSearch={handleSearch}
+            onClearSearch={() => setSearchedTransactions(null)}
           />
         </CardContent>
       </Card>
