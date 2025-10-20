@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const url = `${process.env.BASE_URL}/transactions`
+    const url = `${process.env.BASE_URL}/agents/transactions`
     const response = await axios.get(url, {
       headers: {
         Authorization: token,
