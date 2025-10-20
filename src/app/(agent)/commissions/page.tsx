@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   BarChart,
   Bar,
@@ -21,62 +21,53 @@ import {
 } from 'lucide-react'
 import { SummaryCard } from '@/components/dashboard/policy-summary'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { COMMISSIONS, monthlyPerformanceData } from '@/constants/commissions'
-import { ColumnDef } from '@tanstack/react-table'
-import { Commission } from '@/types/commission'
-import { cn } from '@/lib/utils'
-import { createSortableHeader, DataTable } from '@/components/ui/data-table'
-import { PRIMARY, SECONDARY, TERTIARY } from '@/components/colors'
-
-const commissionColumns: ColumnDef<Commission>[] = [
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'policyId', header: 'Policy ID' },
-  { accessorKey: 'type', header: 'Type' },
-  {
-    accessorKey: 'commission',
-    header: 'Commission',
-    cell: ({ row }) => `₱\t${row.original.commission.toFixed(2)}`,
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => createSortableHeader('Status', column),
-    cell: ({ row }) => {
-      const status = row.original.status
-      const color =
-        status === 'Paid'
-          ? { text: 'text-green-600', bg: 'bg-green-600' }
-          : status === 'Pending'
-            ? { text: 'text-yellow-600', bg: 'bg-yellow-600' }
-            : { text: 'text-red-600', bg: 'bg-red-600' }
-      return (
-        <div className="flex items-center gap-2">
-          <div className={cn('size-2.5 rounded-full', color.bg)} />
-          <span className={color.text}>{status.toUpperCase()}</span>
-        </div>
-      )
-    },
-  },
-
-  {
-    accessorKey: 'paidOn',
-    header: 'Paid On',
-    cell: ({ row }) => new Date(row.original.paidOn).toLocaleDateString(),
-  },
-]
+import { monthlyPerformanceData } from '@/constants/commissions'
+import { PRIMARY, SECONDARY } from '@/components/colors'
+import { useGetTransactions } from '@/app/data/queries/transactions'
+import { TransactionDataTable } from '@/components/transactions/transaction-data-table'
 
 export default function CommissionPage() {
-  const totalCommision = 1_234_533
-  const commissionThisMonth = 20_322
-  const policiesSold = 2
+  const [currentPage, setCurrentPage] = useState(1)
+  const { data: transactionsResponse, isLoading } = useGetTransactions({
+    page: currentPage,
+    perPage: 20,
+  })
+
+  const transactions = transactionsResponse?.data?.data || []
+
+  const totalCommision = useMemo(() => {
+    return transactions.reduce((sum, t) => sum + (t.amount || 0), 0)
+  }, [transactions])
+
+  const commissionThisMonth = useMemo(() => {
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
+
+    return transactions
+      .filter((t) => {
+        const txDate = new Date(t.created_at)
+        return (
+          txDate.getMonth() === currentMonth &&
+          txDate.getFullYear() === currentYear
+        )
+      })
+      .reduce((sum, t) => sum + (t.amount || 0), 0)
+  }, [transactions])
+
+  const policiesSold = useMemo(() => {
+    return transactions.filter((t) => t.status === 'completed').length
+  }, [transactions])
 
   const commissionByType = useMemo(() => {
-    const data = COMMISSIONS.reduce(
+    const data = transactions.reduce(
       (acc, item) => {
-        if (item.status !== 'Paid') return acc
-        if (!acc[item.type]) {
-          acc[item.type] = 0
+        if (item.status !== 'completed') return acc
+        const type = item.status.charAt(0).toUpperCase() + item.status.slice(1)
+        if (!acc[type]) {
+          acc[type] = 0
         }
-        acc[item.type] += item.commission
+        acc[type] += item.amount || 0
         return acc
       },
       {} as Record<string, number>
@@ -85,7 +76,7 @@ export default function CommissionPage() {
       name,
       commission,
     }))
-  }, [])
+  }, [transactions])
 
   return (
     <div className="relative mx-auto w-full space-y-6">
@@ -244,24 +235,10 @@ export default function CommissionPage() {
 
       <Card className="bg-background shadow-sm">
         <CardContent className="p-6">
-          <DataTable<Commission, unknown>
-            columns={commissionColumns}
-            data={COMMISSIONS}
-            searchKey="name"
-            enableRowSelection
-            actions={[
-              {
-                label: 'View Details',
-                onClick: (client) => alert(`Viewing ${client.id}`),
-              },
-              {
-                label: 'Delete',
-                variant: 'destructive',
-                onClick: (client) => alert(`Deleting ${client.name}`),
-              },
-            ]}
-            onRowClick={(client) => console.log('Clicked row:', client)}
-            pageSize={5}
+          <TransactionDataTable
+            data={transactionsResponse?.data}
+            isLoading={isLoading}
+            onPageChange={setCurrentPage}
           />
         </CardContent>
       </Card>
