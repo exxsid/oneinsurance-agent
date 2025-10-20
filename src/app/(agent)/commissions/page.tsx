@@ -28,10 +28,7 @@ import { TransactionDataTable } from '@/components/transactions/transaction-data
 
 export default function CommissionPage() {
   const [currentPage, setCurrentPage] = useState(1)
-  const { data: transactionsResponse, isLoading } = useGetTransactions({
-    page: currentPage,
-    perPage: 20,
-  })
+  const { data: transactionsResponse, isLoading } = useGetTransactions()
 
   const transactions = transactionsResponse?.data?.data || []
 
