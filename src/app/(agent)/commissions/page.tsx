@@ -35,6 +35,7 @@ export default function CommissionPage() {
   const { mutateAsync: searchTractions } = useSearchTransactions()
   const [searchedTransactions, setSearchedTransactions] =
     useState<TransactionsResponse | null>(null)
+  const [isSearching, setIsSearching] = useState(false)
 
   const transactions = transactionsResponse?.data?.data || []
 
@@ -83,12 +84,15 @@ export default function CommissionPage() {
 
   const handleSearch = async (keyword: string) => {
     try {
+      setIsSearching(true)
       const result = await searchTractions({ keyword })
       setSearchedTransactions(result)
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || 'Error searching transactions'
       )
+    } finally {
+      setIsSearching(false)
     }
   }
 
@@ -251,7 +255,7 @@ export default function CommissionPage() {
         <CardContent className="p-6">
           <TransactionDataTable
             data={searchedTransactions?.data || transactionsResponse?.data}
-            isLoading={isLoading}
+            isLoading={isLoading || isSearching}
             onPageChange={setCurrentPage}
             onSearch={handleSearch}
             onClearSearch={() => setSearchedTransactions(null)}
