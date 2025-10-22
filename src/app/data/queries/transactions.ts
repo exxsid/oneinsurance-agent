@@ -3,14 +3,14 @@ import { Transaction, TransactionsResponse } from '@/types/agent/transactions'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-export function useGetTransactions() {
+export function useGetTransactions(page: number = 1) {
   const { accessToken } = useAgentAuthStore()
 
   return useQuery({
-    queryKey: ['transactions'],
+    queryKey: ['transactions', page],
     queryFn: async () => {
       const response = await axios.get<TransactionsResponse>(
-        '/api/transactions',
+        `/api/transactions?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -21,5 +21,6 @@ export function useGetTransactions() {
       return response.data
     },
     enabled: !!accessToken,
+    // keepPreviousData option removed to satisfy types
   })
 }

@@ -51,6 +51,7 @@ export const NAVIGATIONS = [
 
 export const AGENT_NAVIGATIONS = [
   { type: 'single', label: 'Dashboard', link: '/' },
+  { type: 'single', label: 'Transactions', link: '/transactions' },
   {
     type: 'multiple',
     label: 'Clients',

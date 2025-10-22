@@ -10,7 +10,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const url = `${process.env.BASE_URL}/agents/transactions`
+    // Preserve any query string (e.g. ?page=2) when proxying to backend
+    const incomingUrl = new URL(request.url)
+    const query = incomingUrl.search
+    const url = `${process.env.BASE_URL}/agents/transactions${query}`
     const response = await axios.get(url, {
       headers: {
         Authorization: token,
