@@ -1,28 +1,7 @@
 'use client'
 
-import React, { useMemo, useState, useEffect } from 'react'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from 'recharts'
-import {
-  Calendar as CalendarIcon,
-  DollarSign,
-  FileText,
-  Users,
-  TrendingUp,
-} from 'lucide-react'
-import { SummaryCard } from '@/components/dashboard/policy-summary'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { monthlyPerformanceData } from '@/constants/commissions'
-import { PRIMARY, SECONDARY } from '@/components/colors'
 import { useGetTransactions } from '@/app/data/queries/transactions'
 import { TransactionDataTable } from '@/components/transactions/transaction-data-table'
 import { useSearchTransactions } from '@/app/data/mutations/agent/transactions'
@@ -88,7 +67,7 @@ export default function TransactionPage() {
       {/* Header */}
       <header className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold">Commissions</h1>
+          <h1 className="text-3xl font-bold">Transactions</h1>
         </div>
         <div className="mt-3 sm:mt-0">
           <button
